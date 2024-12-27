@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js'
+import {mergeVertices} from 'three/addons/utils/BufferGeometryUtils.js'
 import customShaderMaterial from "three-custom-shader-material/vanilla"
 import GUI from 'lil-gui'
 import wobbleVertexShader from './shaders/wobble/vertex.glsl'
@@ -55,7 +56,6 @@ const material = new customShaderMaterial({
     thickness: 1.5,
     transparent: true,
     wireframe: false,
-
 })
 
 // Tweaks
@@ -67,7 +67,10 @@ gui.add(material, 'thickness', 0, 10, 0.001)
 gui.addColor(material, 'color')
 
 // Geometry
-const geometry = new THREE.IcosahedronGeometry(2.5, 50)
+let geometry = new THREE.IcosahedronGeometry(2.5, 50)
+geometry = mergeVertices(geometry)
+geometry.computeTangents()
+console.log(geometry.attributes)
 
 // Mesh
 const wobble = new THREE.Mesh(geometry, material)
