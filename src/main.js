@@ -50,7 +50,10 @@ const uniforms = {
     uTime: new THREE.Uniform(0),
     uTimeFrequency: new THREE.Uniform(.4),
     uPositionFrequency: new THREE.Uniform(.5),
-    uStrength: new THREE.Uniform(.3)
+    uStrength: new THREE.Uniform(.3),
+    uWrapTimeFrequency: new THREE.Uniform(.12),
+    uWrapPositionFrequency: new THREE.Uniform(.38),
+    uWrapStrength: new THREE.Uniform(1.7)
 
 }
 
@@ -79,9 +82,13 @@ const depthMaterial = new customShaderMaterial({
 
 
 // Tweaks
-gui.add(uniforms.uTimeFrequency, 'value').min(0).max(4).step(.01).name('uTimeFrequency')
-gui.add(uniforms.uStrength, 'value').min(0).max(4).step(.01).name('uTimeStrength')
-gui.add(uniforms.uPositionFrequency, 'value').min(0).max(4).step(.01).name('uPostionFrequency')
+gui.add(uniforms.uTimeFrequency, 'value').min(0).max(2).step(.001).name('uTimeFrequency')
+gui.add(uniforms.uStrength, 'value').min(0).max(2).step(.001).name('uStrength')
+gui.add(uniforms.uPositionFrequency, 'value').min(0).max(2).step(.001).name('uPostionFrequency')
+
+gui.add(uniforms.uWrapTimeFrequency, 'value').min(0).max(2).step(.001).name('uWrapTimeFrequency')
+gui.add(uniforms.uWrapStrength, 'value').min(0).max(2).step(.001).name('uWarpStrength')
+gui.add(uniforms.uWrapPositionFrequency, 'value').min(0).max(2).step(.001).name('uWarpPostionFrequency')
 
 
 gui.add(material, 'metalness', 0, 1, 0.001)
@@ -97,7 +104,7 @@ gui.addColor(material, 'color')
 let geometry = new THREE.IcosahedronGeometry(2.5, 50)
 geometry = mergeVertices(geometry)
 geometry.computeTangents()
-console.log(geometry.attributes)
+// console.log(geometry.attributes)
 
 // Mesh
 const wobble = new THREE.Mesh(geometry, material)

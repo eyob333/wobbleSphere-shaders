@@ -1,17 +1,27 @@
 #include '../includes/simplexNoise4d.glsl'
 
 attribute vec4 tangent;
+
 uniform float uTime;
 uniform float uTimeFrequency;
 uniform float uPositionFrequency;
 uniform float uStrength;
+uniform float uWrapTimeFrequency;
+uniform float uWrapPositionFrequency;
+uniform float uWrapStrength;
 
 varying vec2 Vuv;
 
 
 float getWobble( vec3 position){
+
+    vec3 warppedPosition = position;
+    warppedPosition += simplexNoise4d( 
+        vec4(position * uWrapPositionFrequency, 
+            uTime * uWrapTimeFrequency) * uWrapStrength);
+
     return simplexNoise4d(
-        vec4(position * uPositionFrequency, uTime * uTimeFrequency)) 
+        vec4(warppedPosition * uPositionFrequency, uTime * uTimeFrequency)) 
         * uStrength;
 }
 
