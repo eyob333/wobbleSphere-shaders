@@ -14,8 +14,12 @@ import wobbleFragmentShader from './shaders/wobble/fragment.glsl'
  * Base
  */
 // Debug
-const gui = new GUI({ width: 325 })
+const gui = new GUI({ width: 325 }).close()
 const debugObject = {}
+
+debugObject.colorA = '#0000ff'
+debugObject.colorB = '#ff0000'
+
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -53,7 +57,10 @@ const uniforms = {
     uStrength: new THREE.Uniform(.3),
     uWrapTimeFrequency: new THREE.Uniform(.12),
     uWrapPositionFrequency: new THREE.Uniform(.38),
-    uWrapStrength: new THREE.Uniform(1.7)
+    uWrapStrength: new THREE.Uniform(1.7),
+    uColorA: new THREE.Uniform( new THREE.Color(debugObject.colorA)),
+    uColorB: new THREE.Uniform( new THREE.Color(debugObject.colorB))
+
 
 }
 
@@ -76,8 +83,8 @@ const material = new customShaderMaterial({
 const depthMaterial = new customShaderMaterial({
     baseMaterial: THREE.MeshDepthMaterial,
     vertexShader: wobbleVertexShader,
-    //depthPacking  
-    depthPacking: THREE.RGBADepthPacking  
+    uniforms: uniforms,
+    depthPacking: THREE.RGBADepthPacking
 })
 
 
@@ -89,6 +96,16 @@ gui.add(uniforms.uPositionFrequency, 'value').min(0).max(2).step(.001).name('uPo
 gui.add(uniforms.uWrapTimeFrequency, 'value').min(0).max(2).step(.001).name('uWrapTimeFrequency')
 gui.add(uniforms.uWrapStrength, 'value').min(0).max(2).step(.001).name('uWarpStrength')
 gui.add(uniforms.uWrapPositionFrequency, 'value').min(0).max(2).step(.001).name('uWarpPostionFrequency')
+
+gui.addColor( debugObject, 'colorA')
+    .onChange( () => {
+        uniforms.uColorA.value.set(debugObject.colorA)
+    })
+
+gui.addColor( debugObject, 'colorB')
+    .onChange( () => {
+        uniforms.uColorB.value.set(debugObject.colorB)
+    })
 
 
 gui.add(material, 'metalness', 0, 1, 0.001)

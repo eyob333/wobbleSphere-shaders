@@ -11,6 +11,7 @@ uniform float uWrapPositionFrequency;
 uniform float uWrapStrength;
 
 varying vec2 Vuv;
+varying float vWobble;
 
 
 float getWobble( vec3 position){
@@ -18,11 +19,12 @@ float getWobble( vec3 position){
     vec3 warppedPosition = position;
     warppedPosition += simplexNoise4d( 
         vec4(position * uWrapPositionFrequency, 
-            uTime * uWrapTimeFrequency) * uWrapStrength);
+            uTime * uWrapTimeFrequency)) * uWrapStrength;
 
     return simplexNoise4d(
-        vec4(warppedPosition * uPositionFrequency, uTime * uTimeFrequency)) 
-        * uStrength;
+        vec4(warppedPosition * uPositionFrequency, 
+            uTime * uTimeFrequency)
+        ) * uStrength;
 }
 
 void main(){
@@ -42,11 +44,9 @@ void main(){
     // compute normal
     vec3 toA = normalize(positionA - csm_Position);
     vec3 toB = normalize(positionB - csm_Position);
-
     csm_Normal = cross(toA, toB);
-
- 
 
     //varying
     Vuv= uv;
+    vWobble = wobble/ uStrength;
 }

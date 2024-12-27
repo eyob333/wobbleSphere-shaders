@@ -1,9 +1,19 @@
 
 varying vec2 Vuv;
+varying float vWobble;
+
+uniform vec3 uColorA;
+uniform vec3 uColorB;
 
 void main(){
 
-    // csm_Metalness = step( 0.0, sin(Vuv.x * 100. + .5));
+    float colorMix = smoothstep(-1., 1., vWobble);
+    csm_DiffuseColor.xyz = mix(uColorA, uColorB, colorMix);
+
+    // Mirror step
+    // csm_Metalness = step(.25, colorMix);
     // csm_Roughness = 1. - csm_Metalness;
-    // csm_DiffuseColor.xyz = vec3(variable);
+
+    // shiny tip
+    // csm_Roughness = 1. - colorMix;
 }
