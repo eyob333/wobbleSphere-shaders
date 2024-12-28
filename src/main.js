@@ -113,7 +113,7 @@ gui.add(material, 'roughness', 0, 1, 0.001)
 gui.add(material, 'transmission', 0, 1, 0.001)
 gui.add(material, 'ior', 0, 10, 0.001)
 gui.add(material, 'thickness', 0, 10, 0.001)
-gui.addColor(material, 'color')
+// gui.addColor(material, 'color')
 
 
 
@@ -123,12 +123,26 @@ geometry = mergeVertices(geometry)
 geometry.computeTangents()
 // console.log(geometry.attributes)
 
+
+// gltf model
+
+gltfLoader.load( 'suzanne.glb', (model) =>{
+    const wobble = model.scene.children[0]
+    wobble.castShadow = true
+    wobble.receiveShadow = true
+    wobble.material = material
+    wobble.customDepthMaterial = depthMaterial
+    scene.add(wobble)
+}, () => {
+    console.log('loading the model')
+})
+
 // Mesh
-const wobble = new THREE.Mesh(geometry, material)
-wobble.customDepthMaterial = depthMaterial
-wobble.receiveShadow = true
-wobble.castShadow = true
-scene.add(wobble)
+// const wobble = new THREE.Mesh(geometry, material)
+// wobble.customDepthMaterial = depthMaterial
+// wobble.receiveShadow = true
+// wobble.castShadow = true
+// scene.add(wobble)
 
 /**
  * Plane

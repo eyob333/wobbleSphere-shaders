@@ -15,5 +15,5 @@ void main(){
     // csm_Roughness = 1. - csm_Metalness;
 
     // shiny tip
-    // csm_Roughness = 1. - colorMix;
+    csm_Roughness = 1. - colorMix;
 }
